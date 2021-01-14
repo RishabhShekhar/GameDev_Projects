@@ -5,6 +5,8 @@ pygame.init()
 
 screen = pygame.display.set_mode((800, 600))
 
+background = pygame.image.load('Background.png')
+
 pygame.display.set_caption("Space Invaders")
 icon = pygame.image.load('ufo.png')
 pygame.display.set_icon(icon)
@@ -15,10 +17,18 @@ playerY = 480
 playerX_change = 0
 
 enemyImg = pygame.image.load('alien.png')
-enemyX = random.randint(0,736)
-enemyY = random.randint(50,150)
+enemyX = random.randint(0, 736)
+enemyY = random.randint(50, 150)
 enemyX_change = 1
 enemyY_change = 40
+
+bulletImg = pygame.image.load('bullet.png')
+bulletX = 0
+bulletY = 480
+bulletX_change = 0
+bulletY_change = 7
+bullet_state = "ready"
+
 
 def enemy(x, y):
     screen.blit(enemyImg, (x, y))
@@ -28,10 +38,17 @@ def player(x, y):
     screen.blit(playerImg, (x, y))
 
 
+def fire_bullet(x, y):
+    global bullet_state
+    bullet_state = "fire"
+    screen.blit(bulletImg, (x + 16, y + 10))
+
+
 running = True
 while running:
 
     screen.fill((0, 0, 0))
+    screen.blit(background, (0, 0))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -41,10 +58,13 @@ while running:
             print("Keystroke is pressed")
             if event.key == pygame.K_LEFT:
                 print("Left")
-                playerX_change -= 0.5
+                playerX_change -= 1.5
             if event.key == pygame.K_RIGHT:
                 print("Right")
-                playerX_change += 0.5
+                playerX_change += 1.5
+            if event.key == pygame.K_SPACE and bullet_state == "ready":
+                bulletX = playerX
+                fire_bullet(bulletX, bulletY)
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 print("Released")
@@ -65,6 +85,14 @@ while running:
     elif enemyX >= 736:
         enemyX_change = -1
         enemyY += enemyY_change
+
+    if bulletY<=0:
+        bulletY = 480
+        bullet_state = "ready"
+
+    if bullet_state is "fire":
+        fire_bullet(bulletX, bulletY)
+        bulletY-=bulletY_change
 
     player(playerX, playerY)
     enemy(enemyX, enemyY)
