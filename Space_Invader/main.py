@@ -36,13 +36,16 @@ textY = 10
 
 over_font = pygame.font.Font('freesansbold.ttf', 46)
 
-def show_score(x,y):
-    score = font.render("Score : "+ str(score_value), True, (255,255,255))
+
+def show_score(x, y):
+    score = font.render("Score : " + str(score_value), True, (255, 255, 255))
     screen.blit(score, (x, y))
+
 
 def game_over_text():
     over_text = over_font.render("GAME OVER", True, (255, 255, 255))
     screen.blit(over_text, (250, 230))
+
 
 for i in range(num_of_enemies):
     enemyImg.append(pygame.image.load('alien.png'))
@@ -79,7 +82,6 @@ def isCollision(enemyX, enemyY, bulletX, bulletY):
         return True
     else:
         return False
-
 
 
 running = True
@@ -147,7 +149,6 @@ while running:
     if bullet_state is "fire":
         fire_bullet(bulletX, bulletY)
         bulletY -= bulletY_change
-
 
     player(playerX, playerY)
     show_score(textX, textY)
