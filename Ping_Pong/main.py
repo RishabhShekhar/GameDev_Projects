@@ -23,12 +23,38 @@ opponent_speed = 7
 
 player_score = 0
 opponent_score = 0
-game_font = pygame.font.Font('freesansbold', 32)
+game_font = pygame.font.Font('freesansbold.ttf', 32)
 
 pong_sound = pygame.mixer.Sound('sound/pong.ogg')
 score_sound = pygame.mixer.Sound('sound/score.ogg')
 
 running = True
+while running:
+    screen.fill(bg_color)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            running = False
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_DOWN:
+                player_speed += 7
+            if event.key == pygame.K_UP:
+                player_speed -=7
+
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_DOWN:
+                player_speed -= 7
+            if event.key == pygame.K_UP:
+                player_speed += 7
+
+        pygame.draw.rect(screen, (200, 200, 200), player)
+        pygame.draw.rect(screen, (200, 200, 200), opponent)
+        pygame.draw.ellipse(screen, (200, 200, 200), ball)
+        pygame.draw.aaline(screen, (200, 200, 200), (sw//2, 0), (sw//2, sh))
+
+        pygame.display.update()
+
 
 
 
