@@ -54,28 +54,43 @@ while running:
 
     if ball.top <= 0 or ball.bottom >= sh:
         pong_sound.play()
-        ball_speed_y *= 1
-
-    if ball.left <= 0 or ball.right >= sw:
-        pong_sound.play()
-        ball_speed_x *= 1
-
+        ball_speed_y *= -1
+        
     if ball.left <= 0:
         score_sound.play()
         player_score += 1
+        ball_speed_x *= -1
 
     if ball.right >= sw:
         score_sound.play()
         opponent_score += 1
+        ball_speed_x *= -1
 
     if ball.colliderect(player) or ball.colliderect(opponent):
         pong_sound.play()
         ball_speed_x *= -1
 
+    player.y += player_speed
+    if player.top <= 0:
+        player.top = 0
+    if player.bottom >= sh:
+        player.bottom = sh
+
+    if opponent.bottom < ball.y:
+        opponent.bottom += opponent_speed
+    if opponent.top > ball.y:
+        opponent.top -= opponent_speed
+
     pygame.draw.rect(screen, (200, 200, 200), player)
     pygame.draw.rect(screen, (200, 200, 200), opponent)
     pygame.draw.ellipse(screen, (200, 200, 200), ball)
     pygame.draw.aaline(screen, (200, 200, 200), (sw//2, 0), (sw//2, sh))
+
+    player_text = game_font.render(str(player_score), True, (200, 200, 200))
+    screen.blit(player_text, (sw//2+20, sh//2-16))
+
+    opponent_text = game_font.render(str(opponent_score), True, (200, 200, 200))
+    screen.blit(opponent_text, (sw//2-42, sh // 2 - 16))
 
     pygame.display.update()
     clock.tick(60)
