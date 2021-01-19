@@ -16,8 +16,8 @@ opponent = pygame.Rect(10, sh//2-60, 10, 120)
 
 bg_color = pygame.Color('grey12')
 
-ball_speed_x = 6
-ball_speed_y = 6
+ball_speed_x = 6*random.choice(((-1,1)))
+ball_speed_y = 6*random.choice(((-1,1)))
 
 player_speed = 0
 opponent_speed = 7
@@ -29,12 +29,42 @@ game_font = pygame.font.Font('freesansbold.ttf', 32)
 pong_sound = pygame.mixer.Sound('sound/pong.ogg')
 score_sound = pygame.mixer.Sound('sound/score.ogg')
 
+score_time = None
+
+def ball_restart():
+    global ball_speed_x, ball_speed_y, score_time, sh, sw
+
+    ball.center = (sw//2, sh//2)
+    current_time = pygame.time.get_ticks()
+
+    if current_time - score_time < 700:
+        ball_speed_x = 0
+        ball_speed_y = 0
+        number_three = game_font.render("3", False, (200,200,200))
+        screen.blit(number_three, (sw//2-8, sh//2+50))
+
+    elif current_time - score_time < 1400:
+        ball_speed_x = 0
+        ball_speed_y = 0
+        number_two = game_font.render("2", False, (200,200,200))
+        screen.blit(number_two, (sw//2-8, sh//2+50))
+
+    elif current_time - score_time < 2100:
+        ball_speed_x = 0
+        ball_speed_y = 0
+        number_one = game_font.render("1", False, (200, 200, 200))
+        screen.blit(number_one, (sw // 2 - 8, sh // 2 + 50))
+    else:
+        ball_speed_x = 6 * random.choice(((-1, 1)))
+        ball_speed_y = 6 * random.choice(((-1, 1)))
+        score_time = None
+
+
 running = True
 while running:
     screen.fill(bg_color)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit()
             running = False
 
         if event.type == pygame.KEYDOWN:
@@ -59,16 +89,19 @@ while running:
     if ball.left <= 0:
         score_sound.play()
         player_score += 1
-        ball_speed_x *= -1
+        score_time = pygame.time.get_ticks()
 
     if ball.right >= sw:
         score_sound.play()
         opponent_score += 1
-        ball_speed_x *= -1
+        score_time = pygame.time.get_ticks()
 
     if ball.colliderect(player) or ball.colliderect(opponent):
         pong_sound.play()
         ball_speed_x *= -1
+
+    if score_time:
+        ball_restart()
 
     player.y += player_speed
     if player.top <= 0:
