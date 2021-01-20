@@ -11,6 +11,7 @@ screen = pygame.display.set_mode((sw, sh))
 pygame.display.set_caption("TILES")
 game_font = pygame.font.Font("freesansbold.ttf", 60)
 
+
 running = True
 while running:
     screen.fill((200, 200, 200))
@@ -31,7 +32,6 @@ while running:
 
         x, y = pygame.mouse.get_pos()
         print(x, y)
-
 
     pygame.display.update()
     clock.tick(30)
