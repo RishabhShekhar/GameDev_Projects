@@ -1,7 +1,8 @@
 import pygame, random
+
 pygame.init()
 
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((1000, 400))
 pygame.display.set_caption("TYPING SPEED CALCULATOR")
 text_font = pygame.font.Font("freesansbold.ttf", 20)
 
@@ -18,7 +19,26 @@ statements = [
     "We climbed to the top of the mountain in just under two hours; isn’t that great?",
 ]
 
-statements = random.choice(statements)
+
+def result(inp, statement, time_taken):
+    c = 0
+    C = 0
+    inp_words = inp.split(" ")
+    statement_words = statement.split(" ")
+    print(statement_words)
+    print(inp_words)
+
+    wpm = (len(inp_words) / time_taken) * 60
+
+    for i in range(len(inp_words)):
+        for j in range(len(inp_words[i])):
+            C += 1
+            if inp_words[i][j] == statement_words[i][j]:
+                c += 1
+    return (str(c / C * 100)[:3]), str(wpm)[:3]
+
+
+statement = random.choice(statements)
 inp = ''
 enter = 0
 start = 0
@@ -27,17 +47,17 @@ MainRun = True
 while MainRun:
     screen.fill((0, 0, 0))
 
-    pygame.draw.rect(screen, (255, 255, 0), pygame.Rect(50, 100, 900,40), 3)
-    sentence = text_font.render(statements, True, (255, 255, 255))
-    screen.blit(sentence,(60,110))
+    pygame.draw.rect(screen, (255, 255, 0), pygame.Rect(50, 100, 900, 40), 3)
+    sentence = text_font.render(statement, True, (255, 255, 255))
+    screen.blit(sentence, (60, 110))
 
     pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(50, 200, 900, 40), 3)
     if start == 0:
-        inp_sentence = text_font.render("(PRESS 1 TO START)", True, (120,120,120))
+        inp_sentence = text_font.render("(PRESS 1 TO START)", True, (120, 120, 120))
     else:
         inp_sentence = text_font.render(inp, True, (255, 255, 255))
 
-    screen.blit(inp_sentence,(60, 210))
+    screen.blit(inp_sentence, (60, 210))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -49,12 +69,16 @@ while MainRun:
             elif event.key == pygame.K_RETURN:
                 enter = 1
                 end_time = pygame.time.get_ticks()
+                accuracy, wpm = result(inp, statement, (end_time - start_time) / 100)
             elif event.key == pygame.K_BACKSPACE:
                 inp = inp[:-1]
             else:
                 inp += event.unicode
 
-    if enter = 1:
-        Accuracy_msg =
-    print(inp)
+    if enter == 1:
+        Accuracy_msg = text_font.render("ACCURACY: " + accuracy + "%", True, (255, 255, 255))
+        screen.blit(Accuracy_msg, (400, 300))
+        WPM_msg = text_font.render("WPM: " + wpm, True, (255, 255, 255))
+        screen.blit(WPM_msg, (440, 350))
+
     pygame.display.update()
