@@ -29,6 +29,19 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
 
+    keys = pygame.key.get_pressed()
+
+    if keys[pygame.K_UP]:
+        road_pos += road_acceleration
+        if road_pos >= texture_position_threshold:
+            road_pos = 0
+
+    elif keys[pygame.K_DOWN]:
+        road_pos -= road_acceleration
+        if road_pos <= 0:
+            road_pos = texture_position_threshold
+
+
     texture_position = road_pos
     dz = 0
     z = 0
@@ -39,7 +52,10 @@ while True:
         else:
             screen.blit(dark_road, (0, i + half_screen_height), (0, i, screen_width, 1))
 
-        texture_position += texture_position_acceleration
+        dz += ddz
+        z += dz
+
+        texture_position += texture_position_acceleration + z
         if texture_position >= texture_position_threshold:
             texture_position = 0
 
