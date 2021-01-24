@@ -111,8 +111,19 @@ while True:
 
     if state == 1 and life>0:
         stone_y += 5
-        if stone_x
+        if stone_x < 270:
+            chng = -4
+        elif stone_x > 330:
+            chng = 4
+        stone_x += chng
         screen.blit(rock, (stone_x, stone_y))
+
+        collided = isCollided(car_x, car_y, stone_x, stone_y)
+        if state == 1 and collided:
+            rock_sound.play()
+            state = 0
+            life -= 1
+            start_time = pygame.time.get_ticks()
         if stone_y >= 480:
             state = 0
             start_time = pygame.time.get_ticks()
