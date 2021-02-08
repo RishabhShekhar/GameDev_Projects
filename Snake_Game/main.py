@@ -3,6 +3,8 @@ import random
 
 pygame.init()
 
+clock = pygame.time.Clock()
+
 screen = pygame.display.set_mode((800, 600))
 
 pygame.display.set_caption("SNAKE GAME")
@@ -31,7 +33,6 @@ running = True
 
 while running:
 
-    pygame.time.Clock().tick(50)
     screen.fill((20, 100, 20))
 
     for event in pygame.event.get():
@@ -63,6 +64,14 @@ while running:
         if snake_pos[0] == snake_pos[i]:
             game_over = True
 
+    if 800 <= snake_pos[0][0] or snake_pos[0][0] <= 0:
+        print(score)
+        running = False
+
+    if 0 >= snake_pos[0][1] or snake_pos[0][1] >= 600:
+        print(score)
+        running = False
+
     if game_over:
         print(score)
         running = False
@@ -75,4 +84,5 @@ while running:
     text = font.render(("SCORE: " + str(score)), True, (255, 255, 255))
     screen.blit(text, (0, 0))
 
+    clock.tick(30)
     pygame.display.update()
