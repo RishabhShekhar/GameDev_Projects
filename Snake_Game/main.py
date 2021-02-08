@@ -1,7 +1,6 @@
 import pygame
 import random
 
-
 pygame.init()
 
 screen = pygame.display.set_mode((800, 600))
@@ -12,6 +11,7 @@ score = 0
 
 snake_pos = [[300, 300], [320, 300], [340, 300], [360, 300]]
 
+# DIRECTIONS
 step = 20
 up = (0, -step)
 left = (-step, 0)
@@ -53,27 +53,26 @@ while running:
         timer = 0
 
     if snake_pos[0] == apple_pos:
-        x = (random.randint(20, 780)//20) * 20
+        x = (random.randint(20, 780) // 20) * 20
         y = (random.randint(20, 580) // 20) * 20
         apple_pos = [x, y]
         snake_pos.append(snake_pos[-1])
         score += 1
 
-    for i in range(1 ,len(snake_pos)):
+    for i in range(1, len(snake_pos)):
         if snake_pos[0] == snake_pos[i]:
             game_over = True
 
     if game_over:
-       print(score)
+        print(score)
+        running = False
 
     for x, y in snake_pos:
         pygame.draw.circle(screen, (255, 0, 0), (x, y), 10)
 
     pygame.draw.circle(screen, (0, 0, 255), apple_pos, 10)
 
-    text = font.render(("SCORE: " + str(score)), True, (255,255,255))
+    text = font.render(("SCORE: " + str(score)), True, (255, 255, 255))
     screen.blit(text, (0, 0))
 
     pygame.display.update()
-
-
