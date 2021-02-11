@@ -21,9 +21,6 @@ score_time = None
 def Start_Game(OS):
 
     global score_time
-    sw = 800
-    sh = 600
-    screen = pygame.display.set_mode((sw, sh))
 
     ball = pygame.Rect(sw // 2 - 15, sh // 2 - 15, 30, 30)
     player = pygame.Rect(sw - 20, sh // 2 - 60, 10, 120)
@@ -139,8 +136,9 @@ def Start_Game(OS):
         opponent_text = game_font.render(str(opponent_score), True, (200, 200, 200))
         screen.blit(opponent_text, (sw // 2 - 42, sh // 2 - 16))
 
-        pygame.display.update()
         clock.tick(60)
+        pygame.display.update()
+
 
 
 WelcomeScreen = True
