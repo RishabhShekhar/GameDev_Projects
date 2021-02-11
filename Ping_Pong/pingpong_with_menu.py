@@ -19,7 +19,6 @@ score_time = None
 
 
 def Start_Game(OS):
-
     global score_time
 
     ball = pygame.Rect(sw // 2 - 15, sh // 2 - 15, 30, 30)
@@ -138,7 +137,6 @@ def Start_Game(OS):
 
         clock.tick(60)
         pygame.display.update()
-
 
 
 WelcomeScreen = True
