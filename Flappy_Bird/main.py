@@ -3,12 +3,13 @@ import random
 
 pygame.init()
 
-screen = pygame.display.set_mode((200, 512))
+screen = pygame.display.set_mode((288, 512))
 pygame.display.set_caption("FLAPPY BIRDS")
 
 background = pygame.image.load('imgs/background.png')
 base = pygame.image.load('imgs/base.png')
 
+# BIRD
 x = 100
 y = 300
 jump = False
@@ -19,7 +20,7 @@ birdimg = pygame.image.load('imgs/bird.png')
 def draw_bird(x, y):
     screen.blit(birdimg, (x, y))
 
-
+# PIPES
 pipeupimg = pygame.image.load('imgs/pipe-up.png')
 pipedownimg = pygame.image.load('imgs/pipe-down.png')
 pipe1 = [300, -170]
@@ -52,8 +53,8 @@ wingSound = pygame.mixer.Sound('sounds/wing.wav')
 
 running = True
 while running:
-    screen.blit(background,(0,0))\
-
+    screen.blit(background,(0,0))
+    # screen.blit(base, (0, 410))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -65,12 +66,14 @@ while running:
             if event.key == pygame.K_SPACE:
                 jump = False
 
+    # BIRD MOVEMENT
     draw_bird(x,y)
     if jump:
         y -= 1.5
     else:
         y += speed
 
+    # PIPE MOVEMENT
     for i in Pipes:
         draw_pipe(i)
         i[0] -= 0.5
@@ -78,6 +81,7 @@ while running:
             i[0] = 500
             i[1] = random.randint(-250, -100)
 
+    # GAME OVER AND SCORE
     for i in Pipes:
         if i[0] == 100:
             if y <= i[1]+320 or y >= i[1]+420:
