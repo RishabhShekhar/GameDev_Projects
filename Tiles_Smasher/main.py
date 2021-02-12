@@ -36,7 +36,7 @@ def arcade_mode():
         return False
 
     def draw_lifes(l):
-        lifes = lx
+        lifes = l
         for i in range(lifes):
             pygame.draw.circle(screen, (100,100,0), (760 - 30*i, 20), 15)
 

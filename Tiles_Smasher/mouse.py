@@ -4,13 +4,12 @@ pygame.init()
 
 clock = pygame.time.Clock()
 
-sw = 800
-sh = 600
+sw = 200
+sh = 100
 
 screen = pygame.display.set_mode((sw, sh))
 pygame.display.set_caption("TILES")
 game_font = pygame.font.Font("freesansbold.ttf", 60)
-
 
 running = True
 while running:
@@ -30,8 +29,5 @@ while running:
             elif event.button == 5:  # WHEEL DOWN
                 print("WHEEL DOWN")
 
-        x, y = pygame.mouse.get_pos()
-        print(x, y)
-
-    pygame.display.update()
     clock.tick(30)
+    pygame.display.update()
