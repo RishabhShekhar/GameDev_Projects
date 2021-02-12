@@ -9,10 +9,12 @@ sw = 800
 sh = 600
 
 screen = pygame.display.set_mode((sw, sh))
-# pygame.display.set_caption("TILES")
+pygame.display.set_caption("TILES")
 font_32 = pygame.font.Font("freesansbold.ttf", 32)
 font_64 = pygame.font.Font("freesansbold.ttf", 64)
+
 score = 0
+
 
 def arcade_mode():
     life = 10
@@ -28,9 +30,9 @@ def arcade_mode():
     def print_score(scr):
         screen.blit(game_font.render("SCORE: " + str(scr), True, (0, 0, 0)), (10, 10))
 
-    def isClicked(xy, mx, my):
+    def isClicked(cxy, cmx, cmy):
         global score
-        if xy[0] < mx < xy[0] + 100 and xy[1] < my < xy[1] + 100:
+        if cxy[0] < cmx < cxy[0] + 100 and cxy[1] < cmy < cxy[1] + 100:
             score += 1
             return True
         return False
@@ -38,8 +40,7 @@ def arcade_mode():
     def draw_lifes(l):
         lifes = l
         for i in range(lifes):
-            pygame.draw.circle(screen, (100,100,0), (760 - 30*i, 20), 15)
-
+            pygame.draw.circle(screen, (100, 100, 0), (760 - 30 * i, 20), 15)
 
     ArcadeRun = True
     start = pygame.time.get_ticks()
@@ -68,14 +69,13 @@ def arcade_mode():
 
         if clicked:
             if (current_time - start < 1000) and isClicked(xy, mx, my):
+                clicked = False
                 xy = [random.randint(0, 700), random.randint(0, 500)]
-                pygame.draw.rect(screen, (255, 0, 0), box)
                 start = pygame.time.get_ticks()
 
             elif (current_time - start < 1000) and not isClicked(xy, mx, my):
                 clicked = False
                 life -= 1
-                pygame.draw.rect(screen, (0, 0, 255), box)
                 xy = [random.randint(0, 700), random.randint(0, 500)]
                 start = pygame.time.get_ticks()
                 print(life)
@@ -95,7 +95,6 @@ def arcade_mode():
         pygame.display.update()
 
 
-
 def time_out_mode(st):
     start_time = st
 
@@ -109,9 +108,9 @@ def time_out_mode(st):
     def print_score(scr):
         screen.blit(game_font.render("SCORE: " + str(scr), True, (0, 0, 0)), (10, 10))
 
-    def isClicked(xy, mx, my):
+    def isClicked(cxy, cmx, cmy):
         global score
-        if xy[0] < mx < xy[0] + 100 and xy[1] < my < xy[1] + 100:
+        if cxy[0] < cmx < cxy[0] + 100 and cxy[1] < cmy < cxy[1] + 100:
             score += 1
             print(score)
             return True
@@ -134,13 +133,16 @@ def time_out_mode(st):
 
         box = generate_box(xy[0], xy[1])
         pygame.draw.rect(screen, (255, 0, 0), box)
-        mx, my = pygame.mouse.get_pos()
 
         current_time = pygame.time.get_ticks()
+
+        # BOX MOVEMENT
         if current_time - start > 1000:
             start = pygame.time.get_ticks()
             xy = [random.randint(0, 700), random.randint(0, 500)]
 
+        # DETECTION
+        mx, my = pygame.mouse.get_pos()
         if clicked:
             if (current_time - start < 1000) and isClicked(xy, mx, my):
                 xy = [random.randint(0, 700), random.randint(0, 500)]
@@ -151,14 +153,14 @@ def time_out_mode(st):
 
         if game_time - start_time >= 60000:
             screen.fill((200, 200, 200))
-            msg = pygame.font.Font('freesansbold.ttf',64)
+            msg = pygame.font.Font('freesansbold.ttf', 64)
             screen.blit(msg.render("GAME OVER!!", True, (0, 0, 0)), (180, 200))
 
-            fsc = pygame.font.Font('freesansbold.ttf',32)
-            screen.blit(fsc.render("FINAL SCORE: "+ str(score), True, (0, 0, 0)), (280, 300))
+            fsc = pygame.font.Font('freesansbold.ttf', 32)
+            screen.blit(fsc.render("FINAL SCORE: " + str(score), True, (0, 0, 0)), (280, 300))
 
         print_score(score)
-        clock.tick(60)
+        clock.tick(60) # Frame Per Second
         pygame.display.update()
 
 
@@ -166,6 +168,7 @@ clicked = False
 MainRun = True
 mode = 0
 state = 0
+
 while MainRun:
     screen.fill((200, 200, 200))
     for event in pygame.event.get():
@@ -196,11 +199,11 @@ while MainRun:
     screen.blit(Start, (sw // 2 - 80, sh - 100))
 
     if clicked and state == 0:
-        if 285 < mx < 420 and sh - 360 < my < sh - 323:
+        if 285 < mx < 420 and sh - 360 < my < sh - 323:    # TIME OUT
             mode = 1
-        elif 285 < mx < 420 and sh - 320 < my < sh - 283:
+        elif 285 < mx < 420 and sh - 320 < my < sh - 283:  # ARCADE
             mode = 2
-        elif sw // 2 - 95 < mx < sw // 2 + 95 and sh - 105 < my < sh - 30:
+        elif sw // 2 - 95 < mx < sw // 2 + 95 and sh - 105 < my < sh - 30:  #START
             state = 1
     if mode == 1:
         pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(285, sh - 365, 200, 37), 2)
