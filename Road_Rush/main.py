@@ -19,7 +19,6 @@ health_sound = pygame.mixer.Sound("sounds/health.wav")
 rock_sound = pygame.mixer.Sound("sounds/rock.wav")
 
 texture_position = 0
-
 ddz = 0.001
 dz = 0
 z = 0
@@ -61,14 +60,29 @@ start_time = pygame.time.get_ticks()
 life_time = pygame.time.get_ticks()
 health_piece = 0
 
-while True:
+running = True
+while running:
     pygame.time.Clock().tick(30)
     screen.fill((0, 0, 200))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit()
+            running = False
+            # pygame.quit()
 
     keys = pygame.key.get_pressed()
+
+    '''
+    if keys[pygame.K_UP]:
+        # print("UP")
+        road_pos += road_acceleration
+        if road_pos >= texture_position_threshold:
+            road_pos = 0
+
+    if keys[pygame.K_DOWN]:
+        # print("DOWN")
+        pass
+    '''
+
     if keys[pygame.K_RIGHT]:
         car_x += 5
         if car_x >= 450:
