@@ -15,24 +15,24 @@ font_64 = pygame.font.Font("freesansbold.ttf", 64)
 
 score = 0
 
-
 def arcade_mode():
     life = 10
     clicked = False
 
     game_font = pygame.font.Font("freesansbold.ttf", 32)
+    w, h = 150, 150
 
     xy = [100, 100]
 
-    def generate_box(x, y):
-        return pygame.Rect(x, y, 100, 100)
+    def generate_box(x, y, w, h):
+        return pygame.Rect(x, y, w, h)
 
     def print_score(scr):
         screen.blit(game_font.render("SCORE: " + str(scr), True, (0, 0, 0)), (10, 10))
 
-    def isClicked(cxy, cmx, cmy):
+    def isClicked(cxy, cmx, cmy, w, h):
         global score
-        if cxy[0] < cmx < cxy[0] + 100 and cxy[1] < cmy < cxy[1] + 100:
+        if cxy[0] < cmx < cxy[0] + w and cxy[1] < cmy < cxy[1] + h:
             score += 1
             return True
         return False
@@ -44,6 +44,7 @@ def arcade_mode():
 
     ArcadeRun = True
     start = pygame.time.get_ticks()
+    boxstate = False
     while ArcadeRun:
         screen.fill((200, 200, 200))
         for event in pygame.event.get():
@@ -56,9 +57,17 @@ def arcade_mode():
                 if event.button == 1:
                     clicked = False
 
-        box = generate_box(xy[0], xy[1])
+        box = generate_box(xy[0], xy[1], w, h)
         pygame.draw.rect(screen, (255, 0, 0), box)
         mx, my = pygame.mouse.get_pos()
+
+        if score%10 == 0 and boxstate == True:
+            boxstate = False
+            w -= 20
+            h -= 20
+
+        if score%10 != 0:
+            boxstate = True
 
         current_time = pygame.time.get_ticks()
         if current_time - start > 1000 and not (clicked):
@@ -68,12 +77,12 @@ def arcade_mode():
             xy = [random.randint(0, 700), random.randint(0, 500)]
 
         if clicked:
-            if (current_time - start < 1000) and isClicked(xy, mx, my):
+            if (current_time - start < 1000) and isClicked(xy, mx, my, w, h):
                 clicked = False
                 xy = [random.randint(0, 700), random.randint(0, 500)]
                 start = pygame.time.get_ticks()
 
-            elif (current_time - start < 1000) and not isClicked(xy, mx, my):
+            elif (current_time - start < 1000) and not isClicked(xy, mx, my, w, h):
                 clicked = False
                 life -= 1
                 xy = [random.randint(0, 700), random.randint(0, 500)]
