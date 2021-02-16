@@ -5,7 +5,7 @@ pygame.init()
 
 screen_width = 640
 screen_height = 480
-half_screen_height = screen_height//2
+half_screen_height = screen_height // 2
 screen = pygame.display.set_mode((screen_width, screen_height))
 
 light_road = pygame.image.load("imgs/light_road.png")
@@ -18,16 +18,17 @@ health = pygame.image.load("imgs/health.png")
 health_sound = pygame.mixer.Sound("sounds/health.wav")
 rock_sound = pygame.mixer.Sound("sounds/rock.wav")
 
+# GRADIENT
 texture_position = 0
 ddz = 0.001
 dz = 0
 z = 0
 
-road_pos = 0
-road_acceleration = 80
+road_pos = 0 # Our Position on the road
+road_acceleration = 80 # Speed at which road moves
 texture_position_acceleration = 4
 texture_position_threshold = 300
-half_texture_position_threshold = texture_position_threshold//2
+half_texture_position_threshold = texture_position_threshold // 2
 
 car_x = 260
 car_y = 360
@@ -41,18 +42,23 @@ state = 0
 score = 0
 font = pygame.font.Font('freesansbold.ttf', 32)
 sCoord = (10, 10)
+
+
 def score_print(scr):
-    screen.blit(font.render("Score: "+ str(scr), True, (0, 0, 0)), sCoord)
+    screen.blit(font.render("Score: " + str(scr), True, (0, 0, 0)), sCoord)
+
 
 def isCollided(Cx, Cy, Sx, Sy):
-    if Cx+20<Sx+15<Cx+110 and Cy+20<Sy+11<Cy+110:
+    if Cx + 20 < Sx + 15 < Cx + 110 and Cy + 20 < Sy + 11 < Cy + 110:
         return True
     return False
 
+
 def draw_lives(l):
-    pygame.draw.rect(screen, (200, 0, 0), (600-30*4, 10, 30*5, 15))
+    pygame.draw.rect(screen, (200, 0, 0), (600 - 30 * 4, 10, 30 * 5, 15))
     for i in range(l):
-        pygame.draw.rect(screen, (0,200,0), (600-30*i, 10, 30, 15))
+        pygame.draw.rect(screen, (0, 200, 0), (600 - 30 * i, 10, 30, 15))
+
 
 life = 5
 game = 1
@@ -74,13 +80,15 @@ while running:
     '''
     if keys[pygame.K_UP]:
         # print("UP")
-        road_pos += road_acceleration
-        if road_pos >= texture_position_threshold:
+        road_pos += road_acceleration #(80)
+        if road_pos >= texture_position_threshold: #(300)
             road_pos = 0
 
     if keys[pygame.K_DOWN]:
         # print("DOWN")
-        pass
+        road_pos -= road_acceleration #(80)
+        if road_pos <= 0: #(300)
+            road_pos = texture_position_threshold
     '''
 
     if keys[pygame.K_RIGHT]:
@@ -93,8 +101,7 @@ while running:
         if car_x <= 50:
             car_x += 5
 
-
-    if life>0:
+    if life > 0:
         road_pos += road_acceleration
         if road_pos >= texture_position_threshold:
             road_pos = 0
@@ -123,7 +130,7 @@ while running:
         stone_y = 240
         chng = 0
 
-    if state == 1 and life>0:
+    if state == 1 and life > 0:
         stone_y += 5
         if stone_x < 270:
             chng = -4
@@ -174,7 +181,7 @@ while running:
 
         life_time = pygame.time.get_ticks()
 
-    screen.blit(car,(car_x, car_y))
+    screen.blit(car, (car_x, car_y))
     screen.blit(truck, (270, 210))
 
     score_print(score)
