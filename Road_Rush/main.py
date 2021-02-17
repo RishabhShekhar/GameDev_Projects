@@ -83,7 +83,6 @@ while running:
         road_pos += road_acceleration #(80)
         if road_pos >= texture_position_threshold: #(300)
             road_pos = 0
-
     if keys[pygame.K_DOWN]:
         # print("DOWN")
         road_pos -= road_acceleration #(80)
@@ -124,7 +123,7 @@ while running:
             texture_position = 0
 
     game_time = pygame.time.get_ticks()
-    if game_time - start_time > 1000 and state == 0 and game == 1:
+    if game_time - start_time > 1000 and state == 0 and game == 1 and health_piece == 0:
         state = 1
         stone_x = random.randint(250, 350)
         stone_y = 240
@@ -172,7 +171,6 @@ while running:
                 life = 5
             health_x = random.randint(250, 350)
             health_y = 240
-            start_time = pygame.time.get_ticks()
 
         if health_y >= 480:
             game = 1
