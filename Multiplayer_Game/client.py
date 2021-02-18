@@ -22,6 +22,7 @@ class Player():
         self.val = 3
 
     def draw(self, screen):
+        print(self.rect)
         pygame.draw.rect(screen, self.color, self.rect)
 
     def move(self):
@@ -65,12 +66,12 @@ def main():
     n = Network()
     startPos = read_pos(n.getPos())
     p = Player(startPos[0], startPos[1], 100, 100, (0, 255, 0))
-    p2 = Player(0, 0, 100, 100, (0, 255, 0))
+    p2 = Player(0, 0, 100, 100, (255, 0, 0))
 
     while run:
         clock.tick(30)
 
-        p2Pos = n.send(make_pos((p.x, p.y)))
+        p2Pos = read_pos(n.send(make_pos((p.x, p.y))))
         p2.x = p2Pos[0]
         p2.y = p2Pos[1]
         p2.update()
