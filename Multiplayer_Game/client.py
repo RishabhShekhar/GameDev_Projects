@@ -1,4 +1,5 @@
 import pygame
+from network import Network
 
 pygame.init()
 
@@ -48,6 +49,8 @@ def main():
 
     clock = pygame.time.Clock()
     run = True
+    n = Network()
+    startPos = n.getPos()
     p = Player(50, 50, 100, 100, (0, 255, 0))
 
     while run:
