@@ -22,7 +22,6 @@ class Player():
         self.val = 3
 
     def draw(self, screen):
-        print(self.rect)
         pygame.draw.rect(screen, self.color, self.rect)
 
     def move(self):
@@ -69,7 +68,7 @@ def main():
     p2 = Player(0, 0, 100, 100, (255, 0, 0))
 
     while run:
-        clock.tick(30)
+        clock.tick(60)
 
         p2Pos = read_pos(n.send(make_pos((p.x, p.y))))
         p2.x = p2Pos[0]
@@ -79,7 +78,6 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-                # pygame.quit()
 
         p.move()
         redrawWindow(screen, p, p2)
